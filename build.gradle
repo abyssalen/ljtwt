@@ -1,0 +1,35 @@
+group 'rt'
+version '1.0'
+
+buildscript {
+    ext.kotlin_version = '1.0.6'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'kotlin'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'no.tornado:tornadofx:1.5.+'
+    compile group: 'commons-io', name: 'commons-io', version: '2.0.1'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'rt.ljtwt.LJTWTApp'
+        )
+    }
+    from configurations.compile.collect { entry -> zipTree(entry) }
+}
